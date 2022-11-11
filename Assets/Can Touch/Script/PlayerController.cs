@@ -7,21 +7,33 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public float jumpSpeed = 1;
     private Rigidbody2D rb;
-
+    private SpriteRenderer sb;
     bool jumping;
+    float xMove;
 
     // Start is called before the first frame update
     void Start()
     {
+        Debug.Log(GetSum(6,138)); 
         rb = GetComponent<Rigidbody2D>();
+        sb = GetComponent<SpriteRenderer>();
+      
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        //float n = Util.RemapRange(transform.position.x, -8, 8, 0, 1);
+       // music.volume = n;
+
+        //float x = FollowPlayer.Test();
+        
+        //sr.color = colorGradient.Evluate(n);
+
         //#Method 1 - the Transation Method
 
-        //float xMove = Input.GetAxis("Horizontal");
+        xMove = Input.GetAxis("Horizontal");
         //transform.Translate(xMove * speed * Time.deltaTime, 0, 0);
 
         /*
@@ -48,7 +60,7 @@ public class PlayerController : MonoBehaviour
         //#Method 2 - The Velocity Method
         //#Method 2 is the preferred Method
         //#Method 3 - The Force Method
-        
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
             jumping = true;
@@ -59,6 +71,8 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        /*
         if (Input.GetKey(KeyCode.A))
         {
             rb.velocity = new Vector2(-speed * Time.deltaTime, rb.velocity.y);
@@ -71,6 +85,9 @@ public class PlayerController : MonoBehaviour
             //rb.AddForce(Vector2.right * speed * Time.deltaTime);
 
         }
+        */
+
+        rb.velocity = new Vector2(xMove * speed * Time.deltaTime, rb.velocity.y);
 
         if (jumping == true)
         {
@@ -78,6 +95,17 @@ public class PlayerController : MonoBehaviour
             //rb.AddForce(Vector2.up * jumpSpeed * Time.deltaTime,ForceMode2D.Impulse);
             jumping = false;
         }
-      
+
     }
+
+    public void OnCollisionEnter2D(Collision2D collision)
+    {
+
+    }
+
+    public float GetSum(float a, float b) 
+    {
+        return a +b;
+    }
+
 }
