@@ -1,20 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public LayerMask ground;
+    
     public float speed;
     public float jumpSpeed = 1;
+   
     private Rigidbody2D rb;
     private SpriteRenderer sb;
+    
     bool jumping;
     float xMove;
+
+    private int jumpCount;
+    public int jumpCountMax = 2;
+
+    public float distanceCheckAmount = 0.5f;
 
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(GetSum(6,138)); 
+      
         rb = GetComponent<Rigidbody2D>();
         sb = GetComponent<SpriteRenderer>();
       
@@ -23,69 +33,28 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log("Are we on the ground - " + GroundCheck());
 
-        //float n = Util.RemapRange(transform.position.x, -8, 8, 0, 1);
-       // music.volume = n;
-
-        //float x = FollowPlayer.Test();
-        
-        //sr.color = colorGradient.Evluate(n);
-
-        //#Method 1 - the Transation Method
 
         xMove = Input.GetAxis("Horizontal");
-        //transform.Translate(xMove * speed * Time.deltaTime, 0, 0);
+       
 
-        /*
-        //hold
-        if (Input.GetKey(KeyCode.A))
-        {
-            transform.Translate(-speed * Time.deltaTime, 0, 0);
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            transform.Translate(speed * Time.deltaTime, 0, 0);
-        }
-
-
-        //tap
-        //delta not need because it only on one frame and one fram
-        if (Input.GetKeyDown(KeyCode.Space)) 
-        {
-            transform.Translate(0, jumpSpeed, 0);
-        }
-        */
-
-        //#Method 2 - The Velocity Method
-        //#Method 2 is the preferred Method
-        //#Method 3 - The Force Method
-
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) //&& jumpCount < jumpCountMax)
         {
             jumping = true;
+            //jumpCount++;
         }
 
-
+        if (GroundCheck()) 
+        {
+            jumpCount = 1;
+        }
     }
 
     private void FixedUpdate()
     {
 
-        /*
-        if (Input.GetKey(KeyCode.A))
-        {
-            rb.velocity = new Vector2(-speed * Time.deltaTime, rb.velocity.y);
-            //rb.AddForce(Vector2.left * speed * Time.deltaTime);
-        }
-
-        if (Input.GetKey(KeyCode.D))
-        {
-            rb.velocity = new Vector2(speed * Time.deltaTime, rb.velocity.y);
-            //rb.AddForce(Vector2.right * speed * Time.deltaTime);
-
-        }
-        */
+       
 
         rb.velocity = new Vector2(xMove * speed * Time.deltaTime, rb.velocity.y);
 
@@ -98,14 +67,10 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+
+    public bool GroundCheck() 
     {
-
+        return Physics2D.Raycast(transform.position,Vector2.down, distanceCheckAmount, ground);
     }
-
-    public float GetSum(float a, float b) 
-    {
-        return a +b;
-    }
-
+   
 }
