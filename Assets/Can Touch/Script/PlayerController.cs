@@ -21,6 +21,9 @@ public class PlayerController : MonoBehaviour
 
     public float distanceCheckAmount = 0.5f;
 
+    public GameManager gm;
+    public AudioClip jumpClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,7 +56,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && jumpCount < jumpCountMax)
         {
             jumping = true;
+            gm.PlaySound(jumpClip);
             jumpCount++;
+
+            
         }
 
         if (GroundCheck()) 
