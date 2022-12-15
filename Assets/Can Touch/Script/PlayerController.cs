@@ -37,12 +37,23 @@ public class PlayerController : MonoBehaviour
 
 
         xMove = Input.GetAxis("Horizontal");
-       
 
-        if (Input.GetKeyDown(KeyCode.Space)) //&& jumpCount < jumpCountMax)
+        if (xMove != 0) 
+        {
+            if (xMove > 0)
+            {
+                sb.flipX = true;
+            }
+            else 
+            {
+                sb.flipX = false;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < jumpCountMax)
         {
             jumping = true;
-            //jumpCount++;
+            jumpCount++;
         }
 
         if (GroundCheck()) 
